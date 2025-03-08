@@ -105,7 +105,9 @@ public class TrackingGetServiceImpl implements TrackingGetService {
         return new ViewTransaction(
                 transaction.getTransactionId(), transaction.getAmount(), transaction.getPaymentMode(),
                 transaction.getNote(), transaction.getTransactionType(), transaction.getTransactionTime(),
-                transaction.getCategory().getCategoryName(), transaction.getTags(),
+                transaction.getCategory().getCategoryName(),
+                transaction.getCategory().getCategoryId(),
+                transaction.getTags(),
                 transaction.getLoanDetails() != null ? transaction.getLoanDetails().getIsSettled() : null,
                 transaction.getLoanDetails() != null ? transaction.getLoanDetails().getOutstandingAmount() : null);
     }

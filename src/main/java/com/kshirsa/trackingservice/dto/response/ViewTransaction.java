@@ -24,7 +24,8 @@ public class ViewTransaction {
     private TransactionType transactionType;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime transactionTime;
-    private String category;
+    private String categoryName;
+    private String categoryId;
     private Set<String> tags;
     private Boolean isLoanSettled;
     private Double outstandingLoanAmount;
