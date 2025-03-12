@@ -12,7 +12,6 @@ import com.kshirsa.trackingservice.dto.response.TrackingFilterRes;
 import com.kshirsa.trackingservice.dto.response.ViewTransaction;
 import com.kshirsa.trackingservice.entity.Transactions;
 import com.kshirsa.trackingservice.entity.enums.SortBy;
-import com.kshirsa.trackingservice.entity.enums.TransactionType;
 import com.kshirsa.trackingservice.service.declaration.TrackingGetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
