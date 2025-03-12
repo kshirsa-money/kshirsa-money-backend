@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kshirsa.coreservice.exception.CustomException;
 import com.kshirsa.coreservice.exception.ErrorCode;
 import com.kshirsa.trackingservice.dto.TrackingFilter;
-import com.kshirsa.trackingservice.dto.response.AllCategoryResponse;
-import com.kshirsa.trackingservice.dto.response.CategoryResponse;
-import com.kshirsa.trackingservice.dto.response.TrackingFilterRes;
-import com.kshirsa.trackingservice.dto.response.ViewTransaction;
+import com.kshirsa.trackingservice.dto.response.*;
 import com.kshirsa.trackingservice.entity.Category;
 import com.kshirsa.trackingservice.entity.Transactions;
 import com.kshirsa.trackingservice.entity.enums.PaymentMode;
@@ -20,6 +17,7 @@ import com.kshirsa.trackingservice.repository.TransactionRepo;
 import com.kshirsa.trackingservice.service.declaration.TrackingGetService;
 import com.kshirsa.userservice.service.declaration.UserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +37,7 @@ public class TrackingGetServiceImpl implements TrackingGetService {
     private final ObjectMapper objectMapper;
 
     @Override
-    public AllCategoryResponse getCategory(TransactionType type) {
+    public AllCategoryResponse getCategory() {
         AllCategoryResponse allCategoryResponse = new AllCategoryResponse();
 
         for (TransactionType transactionType : TransactionType.values()) {
@@ -77,20 +75,27 @@ public class TrackingGetServiceImpl implements TrackingGetService {
     }
 
     @Override
-    public List<ViewTransaction> getTransaction(TrackingFilter filter, Integer pageNumber, Integer transactionPerPage, SortBy sortBy) {
+    public AllTransactionRes getTransaction(TrackingFilter filter, Integer pageNumber, Integer transactionPerPage, SortBy sortBy) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, transactionPerPage);
+        AllTransactionRes allTransactionRes = new AllTransactionRes();
         if (filter == null)
             filter = new TrackingFilter();
 
-        List<Transactions> transactions = transactionRepo.findTransactions(filter.getCategory(), filter.getPaymentMode(),
+        Page<Transactions> transactions = transactionRepo.findTransactions(filter.getCategory(), filter.getPaymentMode(),
                 filter.getTransactionType(), filter.getAmountMax(), filter.getAmountMin(), filter.getTransactionAfter(),
                 filter.getTransactionBefore(), filter.getHashTag(), userDetailsService.getUser(),
                 pageRequest.withSort(sortBy.getSortDirection(), sortBy.getSortBy()));
 
-        if (transactions != null)
-            return transactions.stream().map(TrackingGetServiceImpl::convertToViewTransaction).toList();
+        if (transactions != null) {
+            allTransactionRes.setTransactionList(transactions.toList().stream().map(TrackingGetServiceImpl::convertToViewTransaction).toList());
+            allTransactionRes.setTotalPages(transactions.getTotalPages());
+            allTransactionRes.setCurrentPage(transactions.getNumber() + 1);
+            allTransactionRes.setTotalTransactionCount(transactions.getTotalElements());
+            allTransactionRes.setCurrentPageTransactionCount(transactions.getNumberOfElements());
+            allTransactionRes.setHasNextPage(transactions.hasNext());
+        }
 
-        return new ArrayList<>();
+        return allTransactionRes;
     }
 
     @Override

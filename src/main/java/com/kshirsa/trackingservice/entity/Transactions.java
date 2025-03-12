@@ -48,7 +48,7 @@ public class Transactions {
     @ElementCollection()
     @CollectionTable(name = "transaction_tags", joinColumns = @JoinColumn(name = "transaction_id"))
     private Set<String> tags;
-    private String userDetails;
+    private String userId;
 
 
     public static Transactions transactionsDtoToEntity(AddTransaction transaction, Category category, String userId) {
@@ -62,7 +62,7 @@ public class Transactions {
         transactions.setIsRecurring(transaction.getIsRecurring());
         transactions.setTags(transaction.getTags());
         transactions.setCategory(category);
-        transactions.setUserDetails(userId);
+        transactions.setUserId(userId);
         return transactions;
     }
 }

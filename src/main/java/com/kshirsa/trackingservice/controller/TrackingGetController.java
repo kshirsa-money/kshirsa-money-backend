@@ -7,6 +7,7 @@ import com.kshirsa.coreservice.SuccessResponse;
 import com.kshirsa.coreservice.exception.CustomException;
 import com.kshirsa.trackingservice.dto.TrackingFilter;
 import com.kshirsa.trackingservice.dto.response.AllCategoryResponse;
+import com.kshirsa.trackingservice.dto.response.AllTransactionRes;
 import com.kshirsa.trackingservice.dto.response.TrackingFilterRes;
 import com.kshirsa.trackingservice.dto.response.ViewTransaction;
 import com.kshirsa.trackingservice.entity.Transactions;
@@ -39,8 +40,8 @@ public class TrackingGetController extends BaseController {
 
     @Operation(summary = "Get all categories for a transaction type")
     @GetMapping("/category")
-    public ResponseEntity<SuccessResponse<AllCategoryResponse>> getCategory(TransactionType type) {
-        return ok(trackingGetService.getCategory(type), env.getProperty("CATEGORY.FETCH.SUCCESS"));
+    public ResponseEntity<SuccessResponse<AllCategoryResponse>> getCategory() {
+        return ok(trackingGetService.getCategory(), env.getProperty("CATEGORY.FETCH.SUCCESS"));
     }
 
     @Operation(summary = "Get a transaction by id")
@@ -58,10 +59,10 @@ public class TrackingGetController extends BaseController {
     @Operation(summary = "Get transactions based on filters")
     @Parameter(name = "sortBy", description = "Sort results by 'Latest', 'Oldest', 'AmountHighToLow', 'AmountLowToHigh'")
     @GetMapping("/transaction")
-    public ResponseEntity<SuccessResponse<List<ViewTransaction>>> getTransactions(@ParameterObject @ModelAttribute TrackingFilter filter,
-                                                                                  @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
-                                                                                  @RequestParam(required = false, defaultValue = "6") Integer transactionPerPage,
-                                                                                  @RequestParam(required = false, defaultValue = "Latest") SortBy sortBy) {
+    public ResponseEntity<SuccessResponse<AllTransactionRes>> getTransactions(@ParameterObject @ModelAttribute TrackingFilter filter,
+                                                                              @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
+                                                                              @RequestParam(required = false, defaultValue = "6") Integer transactionPerPage,
+                                                                              @RequestParam(required = false, defaultValue = "Latest") SortBy sortBy) {
         return ok(trackingGetService.getTransaction(filter, pageNumber, transactionPerPage, sortBy), env.getProperty("TRANSACTIONS.FETCH.SUCCESS"));
     }
 
