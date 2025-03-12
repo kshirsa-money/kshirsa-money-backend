@@ -1,11 +1,9 @@
 package com.kshirsa.trackingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kshirsa.trackingservice.dto.request.AddTransaction;
 import com.kshirsa.trackingservice.entity.enums.PaymentMode;
 import com.kshirsa.trackingservice.entity.enums.TransactionType;
-import com.kshirsa.userservice.entity.UserDetails;
 import com.kshirsa.utility.IdGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -50,13 +48,10 @@ public class Transactions {
     @ElementCollection()
     @CollectionTable(name = "transaction_tags", joinColumns = @JoinColumn(name = "transaction_id"))
     private Set<String> tags;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private UserDetails userDetails;
+    private String userDetails;
 
 
-    public static Transactions transactionsDtoToEntity(AddTransaction transaction, Category category, UserDetails userDetails) {
+    public static Transactions transactionsDtoToEntity(AddTransaction transaction, Category category, String userId) {
         Transactions transactions = new Transactions();
         transactions.setTransactionId(IdGenerator.generateTransactionId());
         transactions.setAmount(transaction.getAmount());
@@ -67,7 +62,7 @@ public class Transactions {
         transactions.setIsRecurring(transaction.getIsRecurring());
         transactions.setTags(transaction.getTags());
         transactions.setCategory(category);
-        transactions.setUserDetails(userDetails);
+        transactions.setUserDetails(userId);
         return transactions;
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kshirsa.coreservice.exception.CustomException;
 import com.kshirsa.coreservice.exception.ErrorCode;
 import com.kshirsa.trackingservice.dto.TrackingFilter;
+import com.kshirsa.trackingservice.dto.response.AllCategoryResponse;
 import com.kshirsa.trackingservice.dto.response.CategoryResponse;
 import com.kshirsa.trackingservice.dto.response.TrackingFilterRes;
 import com.kshirsa.trackingservice.dto.response.ViewTransaction;
@@ -38,17 +39,26 @@ public class TrackingGetServiceImpl implements TrackingGetService {
     private final ObjectMapper objectMapper;
 
     @Override
-    public List<CategoryResponse> getCategory(TransactionType type) {
-        List<Category> categoryList = categoryRepo.getAllCategory(userDetailsService.getUser(), type.name());
-        List<CategoryResponse> categoryResponse = new ArrayList<>();
-        if (categoryList != null) {
-            categoryList.forEach(category -> categoryResponse.add(new CategoryResponse(category,
-                                    category.getCreatedBy().equalsIgnoreCase("SYSTEM") || !category.getTransactions().isEmpty()
-                            )
-                    )
-            );
+    public AllCategoryResponse getCategory(TransactionType type) {
+        AllCategoryResponse allCategoryResponse = new AllCategoryResponse();
+
+        for (TransactionType transactionType : TransactionType.values()) {
+            List<Category> categoryList = categoryRepo.getAllCategory(userDetailsService.getUser(), transactionType.name());
+            List<CategoryResponse> categoryResponse = new ArrayList<>();
+            if (categoryList != null) {
+                for (Category category : categoryList) {
+                    boolean isInUse = !category.getTransactions().isEmpty();
+                    boolean isDefault = category.getCreatedBy().equalsIgnoreCase("SYSTEM");
+                    categoryResponse.add(new CategoryResponse(category, isInUse, isDefault));
+                }
+            }
+            switch (transactionType) {
+                case EXPENSE -> allCategoryResponse.setEXPENSE(categoryResponse);
+                case INCOME -> allCategoryResponse.setINCOME(categoryResponse);
+                case LOAN -> allCategoryResponse.setLOAN(categoryResponse);
+            }
         }
-        return categoryResponse;
+        return allCategoryResponse;
     }
 
     @Override

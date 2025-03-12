@@ -10,7 +10,6 @@ import com.kshirsa.trackingservice.entity.enums.TransactionType;
 import com.kshirsa.trackingservice.repository.*;
 import com.kshirsa.trackingservice.service.AsyncService;
 import com.kshirsa.trackingservice.service.declaration.TrackingAddService;
-import com.kshirsa.userservice.entity.UserDetails;
 import com.kshirsa.userservice.service.declaration.UserDetailsService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -57,16 +56,16 @@ public class TrackingAddServiceImpl implements TrackingAddService {
             throw new CustomException(ErrorCode.WRONG_TRANSACTION_TYPE.name());                    // Checking Transaction Type selected valid or not
 
 
-        UserDetails userDetails = new UserDetails(userDetailsService.getUser());                    // Getting User Details.(Not from db as it's already validated via jwt)
+        String userDetails = userDetailsService.getUser();                    // Getting User Details.(Not from db as it's already validated via jwt)
 
         Transactions transaction = transactionRepo
                 .save(Transactions.transactionsDtoToEntity(transactionDto, category, userDetails)); // Saving Transaction
 
         if (!transaction.getTags().isEmpty()) {                                                     // Checking if tags are present
-            Optional<HashTags> hashTags = hashTagRepo.findById(userDetails.getUserId());
+            Optional<HashTags> hashTags = hashTagRepo.findById(userDetails);
 
             if (hashTags.isEmpty())
-                hashTagRepo.save(new HashTags(userDetails.getUserId(), transaction.getTags()));     // Creating new HashTags if not present
+                hashTagRepo.save(new HashTags(userDetails, transaction.getTags()));     // Creating new HashTags if not present
             else {
                 transaction.getTags().forEach(tag -> hashTags.get().getHashTag().add(tag));     // Adding new tags to existing HashTags
                 hashTagRepo.save(hashTags.get());
