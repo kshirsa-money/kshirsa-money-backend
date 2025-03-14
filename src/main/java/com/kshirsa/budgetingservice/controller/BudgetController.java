@@ -40,7 +40,7 @@ public class BudgetController extends BaseController {
     }
 
     @Operation(summary = "Update Budget Segment", description = "Update an existing budget segment")
-    @PostMapping("/update/segment")
+    @PutMapping("/update/segment")
     public ResponseEntity<SuccessResponse<BudgetSegment>> updateBudgetSegment(@RequestBody UpdateBudgetDto updateSegmentDto) {
         return ok(addBudgetService.updateBudgetSegment(updateSegmentDto), env.getProperty("BUDGET.SEGMENT.UPDATED"));
     }
