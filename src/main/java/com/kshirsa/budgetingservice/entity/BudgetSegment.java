@@ -21,7 +21,7 @@ public class BudgetSegment {
     private String parentSegmentId;
     private String segmentName;
     private Double allocatedAmount;
-    private Double spentAmount;
+    private Double spentAmount = 0.0;
     private Integer alertPercentage = 80;
     private Boolean isTotalBudget;
     @JdbcTypeCode(SqlTypes.JSON)
@@ -38,7 +38,6 @@ public class BudgetSegment {
         budgetSegment.setParentSegmentId(addBudgetSegmentDto.getParentSegmentId());
         budgetSegment.setSegmentName(addBudgetSegmentDto.getSegmentName());
         budgetSegment.setAllocatedAmount(addBudgetSegmentDto.getAllocatedAmount());
-        budgetSegment.setSpentAmount(addBudgetSegmentDto.getSpentAmount());
         budgetSegment.setAlertPercentage(addBudgetSegmentDto.getAlertPercentage());
         budgetSegment.setIsTotalBudget(addBudgetSegmentDto.getIsTotalBudget());
         budgetSegment.setTransactionCategories(addBudgetSegmentDto.getTransactionCategories());
