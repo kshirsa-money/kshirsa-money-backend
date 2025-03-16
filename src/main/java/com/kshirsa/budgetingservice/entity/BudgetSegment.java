@@ -8,6 +8,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 import java.time.Instant;
+import java.time.YearMonth;
 import java.util.List;
 
 @Data
@@ -42,5 +43,17 @@ public class BudgetSegment {
         budgetSegment.setIsTotalBudget(addBudgetSegmentDto.getIsTotalBudget());
         budgetSegment.setTransactionCategories(addBudgetSegmentDto.getTransactionCategories());
         return budgetSegment;
+    }
+
+    public static BudgetHistory convertToBudgetHistory(BudgetSegment budgetSegment) {
+        BudgetHistory budgetHistory = new BudgetHistory();
+        budgetHistory.setSegmentId(budgetSegment.getSegmentId());
+        budgetHistory.setUserId(budgetSegment.getUserId());
+        budgetHistory.setSegmentName(budgetSegment.getSegmentName());
+        budgetHistory.setAllocatedAmount(budgetSegment.getAllocatedAmount());
+        budgetHistory.setSpentAmount(budgetSegment.getSpentAmount());
+        budgetHistory.setIsTotalBudget(budgetSegment.getIsTotalBudget());
+        budgetHistory.setBudgetMonth(YearMonth.now());
+        return budgetHistory;
     }
 }

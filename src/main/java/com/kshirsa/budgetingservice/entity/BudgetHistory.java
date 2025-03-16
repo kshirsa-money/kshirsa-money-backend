@@ -19,7 +19,6 @@ public class BudgetHistory {
     private String segmentName;
     private Double allocatedAmount;
     private Double spentAmount;
-    private Integer alertPercentage;
     private Boolean isTotalBudget;
     private YearMonth budgetMonth;
     @CreationTimestamp

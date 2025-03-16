@@ -8,4 +8,6 @@ import java.util.List;
 public interface BudgetSegmentRepo extends ListCrudRepository<BudgetSegment, String> {
 
     List<BudgetSegment> findAllByParentSegmentId(String segmentId);
+
+    List<BudgetSegment> findAllByUserId(String userId);
 }
