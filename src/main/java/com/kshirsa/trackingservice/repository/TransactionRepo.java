@@ -19,7 +19,7 @@ public interface TransactionRepo extends ListCrudRepository<Transactions, String
     @Query(value = """
                         SELECT DISTINCT t.* FROM transactions t
                         INNER JOIN category c ON t.category_id = c.category_id
-                        INNER JOIN transaction_tags tt ON t.transaction_id = tt.transaction_id
+                        LEFT JOIN transaction_tags tt ON t.transaction_id = tt.transaction_id
                         WHERE t.user_id = ?9
                         AND ( c.category_name = ANY(CAST(?1 AS text[])) OR CAST(?1 AS text[]) IS NULL )
                         AND ( t.payment_mode = ANY(CAST(?2 AS text[])) OR CAST(?2 AS text[]) IS NULL )
