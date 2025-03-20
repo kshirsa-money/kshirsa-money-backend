@@ -1,6 +1,7 @@
 package com.kshirsa.budgetingservice.entity;
 
 import com.kshirsa.budgetingservice.dto.AddBudgetSegmentDto;
+import com.kshirsa.trackingservice.entity.Category;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,9 +26,8 @@ public class BudgetSegment {
     private Double spentAmount = 0.0;
     private Integer alertPercentage = 80;
     private Boolean isTotalBudget;
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private List<String> transactionCategories;
+    @ManyToMany
+    private List<Category> transactionCategories;
     @CreationTimestamp
     @Column(updatable =false)
     private Instant createdOn;
@@ -41,7 +41,6 @@ public class BudgetSegment {
         budgetSegment.setAllocatedAmount(addBudgetSegmentDto.getAllocatedAmount());
         budgetSegment.setAlertPercentage(addBudgetSegmentDto.getAlertPercentage());
         budgetSegment.setIsTotalBudget(addBudgetSegmentDto.getIsTotalBudget());
-        budgetSegment.setTransactionCategories(addBudgetSegmentDto.getTransactionCategories());
         return budgetSegment;
     }
 
