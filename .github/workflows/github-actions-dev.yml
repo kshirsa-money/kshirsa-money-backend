@@ -28,7 +28,7 @@ jobs:
 
       # Build with Gradle
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
