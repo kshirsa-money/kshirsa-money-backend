@@ -82,4 +82,15 @@ public class BudgetProcessService {
             budgetSegmentRepo.saveAll(segmentsToSave);
         }
     }
+
+    @Async
+    public void updateBudgetForTransactionUpdate(String categoryId, Double oldAmount, Double newAmount) {
+        Double amountDifference = newAmount - oldAmount;
+        updateBudget(categoryId, amountDifference);
+    }
+
+    @Async
+    public void updateBudgetForDeleteTransaction(String categoryId, Double amount) {
+        updateBudget(categoryId, -amount);
+    }
 }

@@ -1,5 +1,6 @@
 package com.kshirsa.trackingservice.service.impl;
 
+import com.kshirsa.budgetingservice.service.impl.BudgetProcessService;
 import com.kshirsa.coreservice.exception.CustomException;
 import com.kshirsa.coreservice.exception.ErrorCode;
 import com.kshirsa.trackingservice.dto.request.AddCategory;
@@ -29,6 +30,7 @@ public class TrackingAddServiceImpl implements TrackingAddService {
     private final HashTagRepo hashTagRepo;
     private final LoanRepaymentRepo loanRepaymentRepo;
     private final AsyncService asyncService;
+    private final BudgetProcessService budgetProcessService;
 
     @Override
     public Category addCategory(AddCategory categoryReq) {
@@ -60,6 +62,8 @@ public class TrackingAddServiceImpl implements TrackingAddService {
 
         Transactions transaction = transactionRepo
                 .save(Transactions.transactionsDtoToEntity(transactionDto, category, userDetails)); // Saving Transaction
+
+        budgetProcessService.updateBudget(category.getCategoryId(), transaction.getAmount());        // Updating Budget
 
         if (!transaction.getTags().isEmpty()) {                                                     // Checking if tags are present
             Optional<HashTags> hashTags = hashTagRepo.findById(userDetails);

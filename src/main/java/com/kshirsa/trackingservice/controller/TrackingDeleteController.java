@@ -43,7 +43,7 @@ public class TrackingDeleteController extends BaseController {
 
     @Operation(summary = "Delete a transaction")
     @DeleteMapping("/transaction")
-    public ResponseEntity<SuccessResponse<Void>> deleteTransaction(@RequestParam String transactionId) {
+    public ResponseEntity<SuccessResponse<Void>> deleteTransaction(@RequestParam String transactionId) throws CustomException {
         trackingDeleteService.deleteTransaction(transactionId);
         return ok(null, env.getProperty("TRANSACTION.DELETE.SUCCESS"));
     }
