@@ -1,8 +1,10 @@
 package com.kshirsa.trackingservice.service.impl;
 
+import com.kshirsa.budgetingservice.service.impl.BudgetProcessService;
+import com.kshirsa.coreservice.exception.CustomException;
+import com.kshirsa.coreservice.exception.ErrorCode;
+import com.kshirsa.trackingservice.entity.Transactions;
 import com.kshirsa.trackingservice.repository.CategoryRepo;
-import com.kshirsa.trackingservice.repository.LoanDetailsRepo;
-import com.kshirsa.trackingservice.repository.LoanRepaymentRepo;
 import com.kshirsa.trackingservice.repository.TransactionRepo;
 import com.kshirsa.trackingservice.service.AsyncService;
 import com.kshirsa.trackingservice.service.declaration.TrackingDeleteService;
@@ -19,10 +21,9 @@ public class TrackingDeleteServiceImpl implements TrackingDeleteService {
 
     private final CategoryRepo categoryRepo;
     private final TransactionRepo transactionRepo;
-    private final LoanDetailsRepo loanDetailsRepo;
-    private final LoanRepaymentRepo loanRepaymentRepo;
     private final UserDetailsService userDetailsService;
     private final AsyncService asyncService;
+    private final BudgetProcessService budgetProcessService;
 
     @Override
     public void deleteCategory(String categoryId) {
@@ -30,8 +31,11 @@ public class TrackingDeleteServiceImpl implements TrackingDeleteService {
     }
 
     @Override
-    public void deleteTransaction(String transactionId) {
-        transactionRepo.deleteById(transactionId);
+    public void deleteTransaction(String transactionId) throws CustomException {
+        Transactions transaction = transactionRepo.findById(transactionId)
+                .orElseThrow(()-> new CustomException(ErrorCode.INVALID_TRANSACTION_ID.name()));       // Checking Transaction selected valid or not
+        transactionRepo.deleteById(transactionId);                                                     // Deleting Transaction
+        budgetProcessService.updateBudgetForDeleteTransaction(transaction.getCategory().getCategoryId(), transaction.getAmount()); // Updating Budget
         asyncService.updateHashTags(userDetailsService.getUser());
     }
 }

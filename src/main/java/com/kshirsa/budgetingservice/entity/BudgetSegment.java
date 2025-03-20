@@ -1,6 +1,7 @@
 package com.kshirsa.budgetingservice.entity;
 
 import com.kshirsa.budgetingservice.dto.AddBudgetSegmentDto;
+import com.kshirsa.trackingservice.entity.Category;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 import java.time.Instant;
+import java.time.YearMonth;
 import java.util.List;
 
 @Data
@@ -24,9 +26,8 @@ public class BudgetSegment {
     private Double spentAmount = 0.0;
     private Integer alertPercentage = 80;
     private Boolean isTotalBudget;
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private List<String> transactionCategories;
+    @ManyToMany
+    private List<Category> transactionCategories;
     @CreationTimestamp
     @Column(updatable =false)
     private Instant createdOn;
@@ -40,7 +41,18 @@ public class BudgetSegment {
         budgetSegment.setAllocatedAmount(addBudgetSegmentDto.getAllocatedAmount());
         budgetSegment.setAlertPercentage(addBudgetSegmentDto.getAlertPercentage());
         budgetSegment.setIsTotalBudget(addBudgetSegmentDto.getIsTotalBudget());
-        budgetSegment.setTransactionCategories(addBudgetSegmentDto.getTransactionCategories());
         return budgetSegment;
+    }
+
+    public static BudgetHistory convertToBudgetHistory(BudgetSegment budgetSegment) {
+        BudgetHistory budgetHistory = new BudgetHistory();
+        budgetHistory.setSegmentId(budgetSegment.getSegmentId());
+        budgetHistory.setUserId(budgetSegment.getUserId());
+        budgetHistory.setSegmentName(budgetSegment.getSegmentName());
+        budgetHistory.setAllocatedAmount(budgetSegment.getAllocatedAmount());
+        budgetHistory.setSpentAmount(budgetSegment.getSpentAmount());
+        budgetHistory.setIsTotalBudget(budgetSegment.getIsTotalBudget());
+        budgetHistory.setBudgetMonth(YearMonth.now());
+        return budgetHistory;
     }
 }

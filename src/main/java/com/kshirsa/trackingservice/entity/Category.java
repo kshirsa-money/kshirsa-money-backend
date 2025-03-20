@@ -1,6 +1,7 @@
 package com.kshirsa.trackingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kshirsa.budgetingservice.entity.BudgetSegment;
 import com.kshirsa.trackingservice.dto.request.AddCategory;
 import com.kshirsa.trackingservice.entity.enums.TransactionType;
 import com.kshirsa.utility.IdGenerator;
@@ -25,6 +26,9 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private List<Transactions> transactions;
+    @ManyToMany(mappedBy = "transactionCategories")
+    @JsonIgnore
+    private List<BudgetSegment> budgetSegments;
 
     public Category(AddCategory addCategory) {
         this.categoryId = IdGenerator.generateCategoryId();
