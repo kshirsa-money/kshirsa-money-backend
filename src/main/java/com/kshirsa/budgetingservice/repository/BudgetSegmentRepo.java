@@ -12,6 +12,10 @@ public interface BudgetSegmentRepo extends ListCrudRepository<BudgetSegment, Str
 
     List<BudgetSegment> findAllByUserId(String userId);
 
-    @Query(value = " SELECT * FROM budget_segment WHERE transaction_categories = ?1 AND user_id = ?2 ", nativeQuery = true)
+    @Query(value = """
+            SELECT * FROM budget_segment b
+            INNER JOIN segment_category s ON b.segment_id = s.join_segment_id
+            WHERE s.join_category_id = ?1 AND b.user_id = ?2
+            """, nativeQuery = true)
     List<BudgetSegment> findAllByCategoryId(String categoryId, String userId);
 }

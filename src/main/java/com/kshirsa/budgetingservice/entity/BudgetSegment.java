@@ -5,9 +5,8 @@ import com.kshirsa.trackingservice.entity.Category;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
+
 import java.time.Instant;
 import java.time.YearMonth;
 import java.util.List;
@@ -27,6 +26,11 @@ public class BudgetSegment {
     private Integer alertPercentage = 80;
     private Boolean isTotalBudget;
     @ManyToMany
+    @JoinTable(
+            name = "segment_category",
+            joinColumns = @JoinColumn(name = "join_segment_id"),
+            inverseJoinColumns = @JoinColumn(name = "join_category_id")
+    )
     private List<Category> transactionCategories;
     @CreationTimestamp
     @Column(updatable =false)

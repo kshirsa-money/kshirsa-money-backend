@@ -2,6 +2,7 @@ package com.kshirsa.trackingservice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -20,10 +21,12 @@ public class TrackingFilter {
     @Schema(name = "category", type = "array[String]", description = "Array of selected category filters", example = "Electronics, Clothing")
     private String[] category;
 
-    @Schema(name = "transactionBefore", description = "Filter for transactions that occurred before this date and time", example = "15-01-2025 14:30:00")
+    @Schema(name = "transactionBefore", description = "Filter for transactions that occurred before this date and time", example = "2025-03-21T15:12:04.726Z")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime transactionBefore;
 
-    @Schema(name = "transactionAfter", description = "Filter for transactions that occurred after this date and time", example = "01-01-2025 00:00:00")
+    @Schema(name = "transactionAfter", description = "Filter for transactions that occurred after this date and time", example = "2025-03-21T15:12:04.726Z")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime transactionAfter;
 
     @Schema(name = "amountMin", description = "Minimum transaction amount filter", example = "50.00")
