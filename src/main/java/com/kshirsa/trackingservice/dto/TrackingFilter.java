@@ -1,7 +1,6 @@
 package com.kshirsa.trackingservice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -22,11 +21,9 @@ public class TrackingFilter {
     private String[] category;
 
     @Schema(name = "transactionBefore", description = "Filter for transactions that occurred before this date and time", example = "15-01-2025 14:30:00")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime transactionBefore;
 
     @Schema(name = "transactionAfter", description = "Filter for transactions that occurred after this date and time", example = "01-01-2025 00:00:00")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime transactionAfter;
 
     @Schema(name = "amountMin", description = "Minimum transaction amount filter", example = "50.00")
