@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface TransactionRepo extends ListCrudRepository<Transactions, String> {
@@ -40,4 +42,7 @@ public interface TransactionRepo extends ListCrudRepository<Transactions, String
                         WHERE tr.user_id = ?1
             """, nativeQuery = true)
     Set<String> findHashTagsByUserId(String userId);
+
+    @Query(value = "SELECT MIN(transaction_time) as minDate, MAX(transaction_time) as maxDate FROM transactions WHERE user_id=?1", nativeQuery = true)
+    Map<String, Timestamp> findMinMaxDates(String userId);
 }

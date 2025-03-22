@@ -2,6 +2,7 @@ package com.kshirsa.trackingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kshirsa.coreservice.BaseConstants;
 import com.kshirsa.trackingservice.dto.request.AddTransaction;
 import com.kshirsa.utility.IdGenerator;
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ public class LoanDetails {
 
     @Id
     private String loanId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BaseConstants.DATE_FORMAT)
     private LocalDate expectedPaymentDate;
     @SuppressWarnings("JpaDataSourceORMInspection")
     @OneToOne()

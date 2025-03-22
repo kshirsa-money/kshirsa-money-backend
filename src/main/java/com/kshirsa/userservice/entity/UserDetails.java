@@ -2,6 +2,7 @@ package com.kshirsa.userservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kshirsa.coreservice.BaseConstants;
 import com.kshirsa.utility.IdGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,9 +35,9 @@ public class UserDetails {
     @Column(columnDefinition = "jsonb")
     @JsonIgnore
     private List<String> loggedInDevices;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BaseConstants.DATE_FORMAT)
     private LocalDate dob;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BaseConstants.DATE_TIME_FORMAT)
     @JsonIgnore
     private LocalDateTime createdOn;
 
@@ -45,9 +46,5 @@ public class UserDetails {
         this.userEmail=userEmail;
         this.createdOn=createdOn;
         this.loggedInDevices = List.of(deviceId);
-    }
-
-    public UserDetails(String userId){
-        this.userId=userId;
     }
 }

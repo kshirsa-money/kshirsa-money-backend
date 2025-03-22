@@ -21,10 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -82,8 +80,8 @@ public class TrackingGetServiceImpl implements TrackingGetService {
             filter = new TrackingFilter();
 
         Page<Transactions> transactions = transactionRepo.findTransactions(filter.getCategory(), filter.getPaymentMode(),
-                filter.getTransactionType(), filter.getAmountMax(), filter.getAmountMin(), filter.getTransactionAfter(),
-                filter.getTransactionBefore(), filter.getHashTag(), userDetailsService.getUser(),
+                filter.getTransactionType(), filter.getAmountMax(), filter.getAmountMin(), filter.getFromDate(),
+                filter.getToDate(), filter.getHashTag(), userDetailsService.getUser(),
                 pageRequest.withSort(sortBy.getSortDirection(), sortBy.getSortBy()));
 
         if (transactions != null) {
@@ -103,11 +101,14 @@ public class TrackingGetServiceImpl implements TrackingGetService {
 
         String userId = userDetailsService.getUser();
         String jsonString = (String) hashTagRepo.findHashTagsByUserId(userId).orElseGet(String::new);
+        Map<String, Timestamp> minMaxDates = transactionRepo.findMinMaxDates(userId);
 
         return TrackingFilterRes.builder()
                 .categories(categoryRepo.getCategoryByUserId(userId))
                 .paymentModes(new HashSet<>(List.of(PaymentMode.values())))
                 .transactionTypes(new HashSet<>(List.of(TransactionType.values())))
+                .toDate(minMaxDates.get("maxDate").toLocalDateTime())
+                .fromDate(minMaxDates.get("minDate").toLocalDateTime())
                 .hashtags(objectMapper.readValue(jsonString, Set.class)).build();
     }
 

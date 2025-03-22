@@ -1,6 +1,7 @@
 package com.kshirsa.trackingservice.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kshirsa.coreservice.BaseConstants;
 import com.kshirsa.trackingservice.entity.enums.PaymentMode;
 import com.kshirsa.trackingservice.entity.enums.TransactionType;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class ViewTransaction {
     private PaymentMode paymentMode;
     private String note;
     private TransactionType transactionType;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BaseConstants.DATE_TIME_FORMAT)
     private LocalDateTime transactionTime;
     private String categoryName;
     private String categoryId;

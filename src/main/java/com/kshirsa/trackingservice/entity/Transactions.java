@@ -1,6 +1,7 @@
 package com.kshirsa.trackingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kshirsa.coreservice.BaseConstants;
 import com.kshirsa.trackingservice.dto.request.AddTransaction;
 import com.kshirsa.trackingservice.entity.enums.PaymentMode;
 import com.kshirsa.trackingservice.entity.enums.TransactionType;
@@ -32,7 +33,7 @@ public class Transactions {
     private String note;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BaseConstants.DATE_TIME_FORMAT)
     private LocalDateTime transactionTime;
     private Boolean isRecurring;
     @CreationTimestamp

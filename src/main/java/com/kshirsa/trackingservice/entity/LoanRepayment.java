@@ -2,6 +2,7 @@ package com.kshirsa.trackingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kshirsa.coreservice.BaseConstants;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ public class LoanRepayment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String loanRepaymentId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BaseConstants.DATE_TIME_FORMAT)
     private LocalDateTime paymentDate;
     private Double amount;
     private String note;

@@ -21,13 +21,13 @@ public class TrackingFilter {
     @Schema(name = "category", type = "array[String]", description = "Array of selected category filters", example = "Electronics, Clothing")
     private String[] category;
 
-    @Schema(name = "transactionBefore", description = "Filter for transactions that occurred before this date and time", example = "2025-03-21T15:12:04.726Z")
+    @Schema(name = "toDate", description = "Filter for transactions that occurred before this date and time", example = "2025-03-21T15:12:04.726Z")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime transactionBefore;
+    private LocalDateTime toDate;
 
-    @Schema(name = "transactionAfter", description = "Filter for transactions that occurred after this date and time", example = "2025-03-21T15:12:04.726Z")
+    @Schema(name = "fromDate", description = "Filter for transactions that occurred after this date and time", example = "2025-03-21T15:12:04.726Z")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime transactionAfter;
+    private LocalDateTime fromDate;
 
     @Schema(name = "amountMin", description = "Minimum transaction amount filter", example = "50.00")
     private Double amountMin;
