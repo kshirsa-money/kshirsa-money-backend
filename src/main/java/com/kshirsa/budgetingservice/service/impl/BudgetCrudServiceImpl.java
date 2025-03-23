@@ -4,7 +4,7 @@ import com.kshirsa.budgetingservice.dto.AddBudgetSegmentDto;
 import com.kshirsa.budgetingservice.dto.UpdateBudgetDto;
 import com.kshirsa.budgetingservice.entity.BudgetSegment;
 import com.kshirsa.budgetingservice.repository.BudgetSegmentRepo;
-import com.kshirsa.budgetingservice.service.declaration.AddBudgetService;
+import com.kshirsa.budgetingservice.service.declaration.BudgetCrudService;
 import com.kshirsa.trackingservice.entity.Category;
 import com.kshirsa.trackingservice.repository.CategoryRepo;
 import com.kshirsa.userservice.service.declaration.UserDetailsService;
@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class AddBudgetServiceImpl implements AddBudgetService {
+public class BudgetCrudServiceImpl implements BudgetCrudService {
 
     private final BudgetSegmentRepo budgetSegmentRepo;
     private final CategoryRepo categoryRepo;

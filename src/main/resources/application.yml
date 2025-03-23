@@ -3,6 +3,9 @@ spring:
     active: ${ACTIVE_PROFILE:local}
   application:
     name: KshirsaApplication
+  threads:
+    virtual:
+      enabled: true
   sql:
     init:
       mode: always

@@ -4,7 +4,7 @@ import com.kshirsa.budgetingservice.dto.AddBudgetSegmentDto;
 import com.kshirsa.budgetingservice.dto.UpdateBudgetDto;
 import com.kshirsa.budgetingservice.entity.BudgetSegment;
 
-public interface AddBudgetService {
+public interface BudgetCrudService {
     BudgetSegment addBudgetSegment(AddBudgetSegmentDto addBudgetSegmentDto);
 
     BudgetSegment getBudgetSegment(String segmentId);
