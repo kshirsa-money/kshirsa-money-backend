@@ -26,6 +26,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # Download New Relic agent
+      - name: Download New Relic agent
+        run: ./gradlew downloadNewrelic
+
+      # Unzip New Relic agent
+      - name: Unzip New Relic agent
+        run: ./gradlew unzipNewrelic
+
       # Build with Gradle
       - name: Build with Gradle
         run: ./gradlew build -x test
