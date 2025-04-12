@@ -24,6 +24,7 @@ public class BudgetCrudServiceImpl implements BudgetCrudService {
 
     private final BudgetSegmentRepo budgetSegmentRepo;
     private final CategoryRepo categoryRepo;
+    private final BudgetProcessService budgetProcessService;
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -36,7 +37,11 @@ public class BudgetCrudServiceImpl implements BudgetCrudService {
                         .orElseThrow()));                                           // Getting all the category entities or throw if invalid id
         budgetSegment.setTransactionCategories(categories);                         // adding categories to the segments
 
-        return budgetSegmentRepo.save(budgetSegment);
+        budgetSegment = budgetSegmentRepo.save(budgetSegment);
+
+        budgetProcessService.initializeBudget(budgetSegment);
+
+        return budgetSegment;
     }
 
     @Override
@@ -54,7 +59,12 @@ public class BudgetCrudServiceImpl implements BudgetCrudService {
         budgetSegment.setAlertPercentage(updateSegmentDto.getAlertPercentage());
         updateSegmentDto.getTransactionCategories().forEach(catId -> categories.add(categoryRepo.findById(catId).orElseThrow()));
         budgetSegment.setTransactionCategories(categories);
-        return budgetSegmentRepo.save(budgetSegment);
+
+        budgetSegment = budgetSegmentRepo.save(budgetSegment);
+
+        budgetProcessService.initializeBudget(budgetSegment);
+
+        return budgetSegment;
     }
 
     @Override

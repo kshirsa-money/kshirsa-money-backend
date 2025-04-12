@@ -24,7 +24,6 @@ public class BudgetSegment {
     private Double allocatedAmount;
     private Double spentAmount = 0.0;
     private Integer alertPercentage = 80;
-    private Boolean isTotalBudget;
     @ManyToMany
     @JoinTable(
             name = "segment_category",
@@ -44,7 +43,6 @@ public class BudgetSegment {
         budgetSegment.setSegmentName(addBudgetSegmentDto.getSegmentName());
         budgetSegment.setAllocatedAmount(addBudgetSegmentDto.getAllocatedAmount());
         budgetSegment.setAlertPercentage(addBudgetSegmentDto.getAlertPercentage());
-        budgetSegment.setIsTotalBudget(addBudgetSegmentDto.getIsTotalBudget());
         return budgetSegment;
     }
 
@@ -55,7 +53,6 @@ public class BudgetSegment {
         budgetHistory.setSegmentName(budgetSegment.getSegmentName());
         budgetHistory.setAllocatedAmount(budgetSegment.getAllocatedAmount());
         budgetHistory.setSpentAmount(budgetSegment.getSpentAmount());
-        budgetHistory.setIsTotalBudget(budgetSegment.getIsTotalBudget());
         budgetHistory.setBudgetMonth(YearMonth.now());
         return budgetHistory;
     }
