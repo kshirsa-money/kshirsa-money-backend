@@ -3,24 +3,22 @@ package com.kshirsa.budgetingservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.time.YearMonth;
 
 @Data
 @Entity
-public class BudgetHistory {
+public class TotalMonthlyBudget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String historyId;
-    private String segmentId;
+    private String totalBudgetId;
     private String userId;
-    private String segmentName;
-    private Double allocatedAmount;
-    private Double spentAmount;
-    private YearMonth budgetMonth;
-    @CreationTimestamp
+    private Double monthlyBudget;
     @Column(updatable = false)
-    private Instant recordedOn;
+    @CreationTimestamp
+    private Instant createdOn;
+    @UpdateTimestamp
+    private Instant updatedOn;
 }

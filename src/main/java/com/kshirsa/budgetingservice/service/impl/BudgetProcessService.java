@@ -3,6 +3,7 @@ package com.kshirsa.budgetingservice.service.impl;
 import com.kshirsa.budgetingservice.entity.BudgetSegment;
 import com.kshirsa.budgetingservice.repository.BudgetHistoryRepo;
 import com.kshirsa.budgetingservice.repository.BudgetSegmentRepo;
+import com.kshirsa.trackingservice.entity.Category;
 import com.kshirsa.userservice.service.declaration.UserDetailsService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +30,20 @@ public class BudgetProcessService {
         List<BudgetSegment> budgets = budgetSegmentRepo.findAllByUserId(userId);
         if (!budgets.isEmpty()) {
             budgetHistoryRepo.saveAll(budgets.stream().map(BudgetSegment::convertToBudgetHistory).toList());
+            budgetSegmentRepo.saveAll(budgets.stream().peek(budget -> budget.setSpentAmount(0.0)).toList());
         }
     }
 
     @Async
-    @Transactional
+    public void initializeBudget(BudgetSegment budgetSegment) {
+        Double totalSpent = budgetSegment.getTransactionCategories().stream()
+                .mapToDouble(Category::getTotalSpent)
+                .sum();
+        budgetSegment.setSpentAmount(totalSpent);
+        budgetSegmentRepo.save(budgetSegment);
+    }
+
+    @Async
     public void updateBudget(String categoryId, Double amount) {
 
         String userId = userDetailsService.getUser();
@@ -55,7 +65,7 @@ public class BudgetProcessService {
         for (BudgetSegment startSegment : startSegments) {
             String currentId = startSegment.getSegmentId();
 
-            while (startSegment.getIsTotalBudget() || currentId != null && !processedIds.contains(currentId)) {
+            while (currentId != null && !processedIds.contains(currentId)) {
                 processedIds.add(currentId);
                 BudgetSegment segment = segmentMap.get(currentId);
 
@@ -68,7 +78,7 @@ public class BudgetProcessService {
                 segmentsToSave.add(segment);
 
                 // Stop if we've reached the root
-                if (segment.getIsTotalBudget() || segment.getParentSegmentId() == null) {
+                if (segment.getParentSegmentId() == null) {
                     break;
                 }
 

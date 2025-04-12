@@ -36,4 +36,10 @@ public class Category {
         this.description = addCategory.description();
         this.transactionType = addCategory.transactionType();
     }
+
+    public Double getTotalSpent() {
+        return transactions.stream()
+                .mapToDouble(Transactions::getAmount)
+                .sum();
+    }
 }
