@@ -9,6 +9,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+
 @Service
 @RequiredArgsConstructor
 public class SendAsyncEmail {
@@ -19,14 +21,14 @@ public class SendAsyncEmail {
     private final JavaMailSender mailSender;
 
     @Async
-    public void sendEmail(String content, String subject, String toEmail) throws MessagingException {
+    public void sendEmail(String content, String subject, String toEmail) throws MessagingException, UnsupportedEncodingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
         mimeMessage.setContent(content, "text/html");
         helper.setTo(toEmail);
         helper.setSubject(subject);
-        helper.setFrom(fromEmail);
+        helper.setFrom(fromEmail,"Kshirsa Money");
         mailSender.send(mimeMessage);
     }
 }

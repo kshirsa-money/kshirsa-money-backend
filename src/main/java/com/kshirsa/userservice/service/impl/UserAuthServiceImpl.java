@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
 @Service
@@ -34,7 +35,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final GeoLite2Service geoLite2Service;
 
     @Override
-    public LoginResponse otpValidateFlow(OtpValidateRequest request, String deviceId, HttpServletRequest httpRequest) throws CustomException, MessagingException {
+    public LoginResponse otpValidateFlow(OtpValidateRequest request, String deviceId, HttpServletRequest httpRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         if (userOtpService.validateOtp(request.email(), request.otp())) {           //Validating OTP
             UserDetails user = userRepository.findByUserEmail(request.email());
             if (user == null) {                                                     //If user is registered or not

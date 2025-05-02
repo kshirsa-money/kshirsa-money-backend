@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Enumeration;
 
@@ -46,7 +47,7 @@ public class UserAuthController extends BaseController {
     @Operation(summary = "Generate OTP for email validation for sign up & login")
     @GetMapping(path = "/otp")
     public ResponseEntity<SuccessResponse<GenerateOtpResponse>> generateEmailOtp(@Pattern(regexp= UserConstants.EMAIL_REGEX, message = "INVALID_EMAIL_FORMAT")
-                                                                                     @NotNull String email) throws CustomException, MessagingException {
+                                                                                     @NotNull String email) throws CustomException, MessagingException, UnsupportedEncodingException {
         return ok(userOtpService.generateOtp(email), env.getProperty("OTP.SENT") + email);
     }
 
@@ -54,7 +55,7 @@ public class UserAuthController extends BaseController {
     @PostMapping("/otp/validate")
     public ResponseEntity<SuccessResponse<LoginResponse>> otpValidate(@RequestHeader(value = UserConstants.DEVICE_ID)@NonNull String deviceId,
                                                                       @RequestBody @Valid OtpValidateRequest request,
-                                                                      HttpServletRequest httpRequest) throws CustomException, MessagingException {
+                                                                      HttpServletRequest httpRequest) throws CustomException, MessagingException, UnsupportedEncodingException {
         return ok(userAuthService.otpValidateFlow(request,deviceId, httpRequest), env.getProperty("USER.LOGGEDIN"));
     }
 
