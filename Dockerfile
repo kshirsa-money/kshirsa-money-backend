@@ -14,4 +14,4 @@ COPY /newrelic/newrelic.yml /app/newrelic/newrelic.yml
 EXPOSE 8500
 
 # Specify the command to run on container startup
-CMD ["java", "-javaagent:/app/newrelic/newrelic.jar","-jar", "/app/build/Kshirsa-0.1.1-alpha.jar"]
+CMD ["java", "-javaagent:/app/newrelic/newrelic.jar","-jar", "/app/build/Kshirsa-1.0.0-SNAPSHOT.jar"]
