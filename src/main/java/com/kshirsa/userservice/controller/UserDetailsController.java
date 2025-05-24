@@ -6,7 +6,6 @@ import com.kshirsa.coreservice.SuccessResponse;
 import com.kshirsa.coreservice.exception.CustomException;
 import com.kshirsa.userservice.dto.request.SignUpRequest;
 import com.kshirsa.userservice.dto.response.UserResponse;
-import com.kshirsa.userservice.entity.UserDetails;
 import com.kshirsa.userservice.service.declaration.UserDetailsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 @SecurityRequirement(name = "Bearer Authentication")
-@Tag(name = "User Details Controller", description = "Authenticated endpoints for user details")
+@Tag(name = "2. User Details Controller", description = "Authenticated endpoints for user details")
 
 public class UserDetailsController extends BaseController {
 

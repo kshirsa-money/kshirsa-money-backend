@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,12 @@ public class JwtHelper {
     public String JWT_SECRET;
 
     private final UserDetailsRepository userDetailsRepository;
+    private Key signKey;
+
+    @PostConstruct
+    public void init() {
+        this.signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(JWT_SECRET));
+    }
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
@@ -42,7 +49,7 @@ public class JwtHelper {
     }
 
     protected Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(signKey).build().parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -53,28 +60,29 @@ public class JwtHelper {
         return (!isTokenExpired(token));
     }
 
-    public String generateToken(Integer userId) {
+    public String generateToken(String userId) {
         Map<String, Object> claims = new HashMap<>();
         UserDetails user = userDetailsRepository.findById(userId).orElseThrow();
         claims.put("Name", user.getName());
         claims.put("User Email", user.getUserEmail());
-        return createToken(claims, userId.toString());
+        return createToken(claims, userId);
     }
 
     private String createToken(Map<String, Object> claims, String userId) {
-        return Jwts.builder().setClaims(claims).setSubject(userId).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_VALIDITY * 1000L))
-                .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
+        return Jwts.builder()
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setClaims(claims)
+                .setSubject(userId)
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_VALIDITY * 1000L + 10*1000L))
+                .signWith(signKey, SignatureAlgorithm.HS256)
+                .compact();
     }
 
-    private String getTemporaryToken(String email, int validityInMin) {
-        return Jwts.builder().setSubject(email.toLowerCase()).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + validityInMin * 1000L))
-                .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
-    }
-
-    private Key getSignKey() {
-        byte[] key = Decoders.BASE64.decode(JWT_SECRET);
-        return Keys.hmacShaKeyFor(key);
-    }
+//    private String getTemporaryToken(String email, int validityInMin) {
+//        return Jwts.builder()
+//                .setSubject(email.toLowerCase())
+//                .setIssuedAt(new Date(System.currentTimeMillis()))
+//                .setExpiration(new Date(System.currentTimeMillis() + validityInMin * 1000L + 10*1000L))
+//                .signWith(signKey, SignatureAlgorithm.HS256).compact();
+//    }
 }

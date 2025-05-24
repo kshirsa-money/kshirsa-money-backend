@@ -5,7 +5,7 @@ import com.kshirsa.userservice.dto.request.SignUpRequest;
 import com.kshirsa.userservice.dto.response.UserResponse;
 
 public interface UserDetailsService {
-    Integer getUser() throws CustomException;
+    String getUser();
 
     UserResponse updateUserDetails(SignUpRequest request) throws CustomException;
 

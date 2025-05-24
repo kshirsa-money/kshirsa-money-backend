@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -56,7 +57,7 @@ public class UserOtpServiceImpl implements UserOtpService {
     }
 
     @Override
-    public GenerateOtpResponse generateOtp(String email) throws MessagingException, CustomException {
+    public GenerateOtpResponse generateOtp(String email) throws MessagingException, CustomException, UnsupportedEncodingException {
         if (BaseConstants.ADMIN_EMAILS.contains(email)) {
             otpDetailsRepository
                     .save(new OtpDetails(email.toLowerCase(), 8520, LocalDateTime.now().plusMinutes(UserConstants.OTP_VALIDITY)));

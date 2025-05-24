@@ -8,7 +8,6 @@ import com.kshirsa.userservice.entity.UserDetails;
 import com.kshirsa.userservice.repository.UserDetailsRepository;
 import com.kshirsa.userservice.service.declaration.UserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,13 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserDetailsRepository userRepository;
 
     @Override
-    public Integer getUser() throws CustomException {
+    public String getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return Integer.parseInt(authentication.getName());
-        } else {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND.name());
-        }
+        return authentication.getName();
     }
 
     @Override
@@ -38,14 +33,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setCountry(request.country());
         user.setGender(request.gender());
         user.setDob(request.dob());
-        user=userRepository.save(user);
-        return new UserResponse(user,isSignupFlowCompleted(user));
+        user = userRepository.save(user);
+        return new UserResponse(user, isSignupFlowCompleted(user));
     }
 
     @Override
     public UserResponse getUserDetails() throws CustomException {
         UserDetails user = userRepository.findById(getUser()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND.name()));
-        return new UserResponse(user,isSignupFlowCompleted(user));
+        return new UserResponse(user, isSignupFlowCompleted(user));
     }
 
     public Boolean isSignupFlowCompleted(UserDetails user) {

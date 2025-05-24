@@ -6,6 +6,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,17 +18,17 @@ public class EmailService {
 
     private final SendAsyncEmail sendAsyncEmail;
 
-    public void sendOtpByEmail(EmailValidationType emailType, String email, String otp) throws MessagingException {
+    public void sendOtpByEmail(EmailValidationType emailType, String email, String otp) throws MessagingException, UnsupportedEncodingException {
         String subject = "Hello from Kshirsa! Your OTP is " + otp;
         sendAsyncEmail.sendEmail(welcomeHtmlTemplate(emailType, otp), subject, email.toLowerCase());
     }
 
-    public void sendWelcomeMail(String email) throws MessagingException {
+    public void sendWelcomeMail(String email) throws MessagingException, UnsupportedEncodingException {
         String subject = "Welcome to Kshirsa!";
         sendAsyncEmail.sendEmail(welcomeHtml, subject, email.toLowerCase());
     }
 
-    public void sendNewDeviceLoginEmail(String email, LocationFromIpResponse location) throws MessagingException {
+    public void sendNewDeviceLoginEmail(String email, LocationFromIpResponse location) throws MessagingException, UnsupportedEncodingException {
         String subject = "New Device Login";
         sendAsyncEmail.sendEmail(newDeviceHtmlTemplate(location), subject, email.toLowerCase());
     }

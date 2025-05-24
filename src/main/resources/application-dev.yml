@@ -3,6 +3,12 @@ checkMail:
   key: ${CHECK_MAIL_KEY}
   host: ${CHECK_MAIL_HOST}
 
+####### Geolite2 ########
+GEOLITE:
+  LICENCE:
+    KEY: ${GEOLITE_LICENCE_KEY}
+  ACCOUNTID: ${GEOLITE_ACCOUNTID}
+
 ######## PostgreSql ########
 spring:
   datasource:

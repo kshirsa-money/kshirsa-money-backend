@@ -26,7 +26,7 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public RefreshToken getRefreshToken(Integer userId, String deviceId) {
+    public RefreshToken getRefreshToken(String userId, String deviceId) {
         RefreshToken newToken = new RefreshToken(userId, UUID.randomUUID().toString(),
                 Instant.now().plusSeconds(REFRESH_TOKEN_VALIDITY), deviceId);
         refreshTokenRepository.save(newToken);
@@ -44,7 +44,7 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(rt).getExpirationDate();
     }
 
-    public Integer tokenValidation(String token, String deviceId) throws CustomException {
+    public String tokenValidation(String token, String deviceId) throws CustomException {
         RefreshToken refreshToken = retrieveTokenFromDb(token);
 
         if (refreshToken.getExpirationDate().isAfter(Instant.now())) {          //Checking if token is expired
@@ -62,8 +62,8 @@ public class RefreshTokenService {
         }
     }
 
-    public void deleteToken(String input) {
-        refreshTokenRepository.deleteById(input);
+    public void deleteToken(String token) {
+        refreshTokenRepository.deleteById(token);
     }
 
     @Scheduled(cron = UserConstants.FIXED_DELAY)

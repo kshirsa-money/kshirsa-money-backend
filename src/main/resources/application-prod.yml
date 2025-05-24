@@ -1,4 +1,8 @@
-
+####### Geolite2 ########
+GEOLITE:
+  LICENCE:
+    KEY: ${GEOLITE_LICENCE_KEY}
+  ACCOUNTID: ${GEOLITE_ACCOUNTID}
 
 ######## CHECK MAIL ########
 checkMail:

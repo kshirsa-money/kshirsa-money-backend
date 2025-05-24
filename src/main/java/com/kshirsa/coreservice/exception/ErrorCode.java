@@ -23,9 +23,17 @@ public enum ErrorCode {
     NOT_BLANK(400, 705, "This field cannot be blank or null."),
     DISPOSABLE_EMAIL(400, 707, "Disposable email addresses are not allowed."),
     INVALID_EMAIL_DOMAIN(400, 708, "The email domain is invalid."),
+    INVALID_CATEGORY(400, 709, "The provided category id is invalid."),
+    INVALID_TRANSACTION_ID(400, 710, "The provided transaction ID is not valid."),
+    MISSING_HEADER(400, 711, "The required header is missing."),
 
     // Business Logic and Entity Errors (8xx)
     EMAIL_ALREADY_EXISTS(422, 801, "Email ID is already in use. Please use a different email address."),
+    LOAN_DETAILS_REQUIRED(400, 802, "Loan details are required for a loan transaction."),
+    WRONG_TRANSACTION_TYPE(400, 803, "The transaction type is not valid for this category."),
+    NO_LOAN_DETAILS(400, 804, "No loan details found for this transaction."),
+    INVALID_LOAN_REPAYMENT_ID(400, 805, "The provided loan repayment ID is not valid."),
+    CATEGORY_IN_USE(409, 806, "This category is still in use and cannot be deleted."),
 
     // Server or General Errors (9xx)
     GENERAL_EXCEPTION(500, 901, "An unexpected error occurred. Please try again later.");

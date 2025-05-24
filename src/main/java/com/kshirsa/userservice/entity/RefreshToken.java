@@ -15,7 +15,7 @@ import java.time.Instant;
 public class RefreshToken {
 
 	
-	private Integer userId;
+	private String userId;
 	@Id
 	private String token;
 	private Instant expirationDate;

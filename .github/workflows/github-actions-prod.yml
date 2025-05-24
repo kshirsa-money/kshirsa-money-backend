@@ -14,8 +14,6 @@ jobs:
       # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          lfs: true
 
       # Set up JDK
       - name: Set up JDK
@@ -28,9 +26,17 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # Download New Relic agent
+      - name: Download New Relic agent
+        run: ./gradlew downloadNewrelic
+
+      # Unzip New Relic agent
+      - name: Unzip New Relic agent
+        run: ./gradlew unzipNewrelic
+
       # Build with Gradle
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx

@@ -51,7 +51,7 @@ public class EmailTemplates {
                         <p>This OTP is valid for only <b>%s</b> minutes.</p>
                         <p>If you didn't sign up for an account with us, you can safely ignore this email.</p>
                         <p>Warm Regards,<br><span style="color: #018665;"><b>Kshirsa Team</b></span></p>
-                        <div class="footer">© 2024 Kshirsa. All rights reserved.</div>
+                        <div class="footer">© 2025 Kshirsa. All rights reserved.</div>
                     </div>
                     </body>
                     </html>
@@ -116,7 +116,7 @@ public class EmailTemplates {
                 <p class="message">We're thrilled to have you on board! Kshirsa is your one-stop personal finance app.</p>
                 <p class="message"><strong>Quick Tip to Get Started:</strong><br>Complete your profile today to unlock personalized tips and take control of your finances like a pro!</p>
                 <p class="footer">Cheers,<br><span style="color: #018665;"><b>Team Kshirsa</b></span></p>
-                <div class="footer">© 2024 Kshirsa. All rights reserved.</div>
+                <div class="footer">© 2025 Kshirsa. All rights reserved.</div>
             </div>
             </body>
             </html>
@@ -185,7 +185,7 @@ public class EmailTemplates {
                 </ul>
                 <p class="message">If this was you, you can safely ignore this email. If you did not initiate this login, please secure your account immediately.</p>
                 <p class="footer">Warm Regards,<br><span style="color: #018665;"><b>Team Kshirsa</b></span></p>
-                <div class="footer">© 2024 Kshirsa. All rights reserved.</div>
+                <div class="footer">© 2025 Kshirsa. All rights reserved.</div>
             </div>
             </body>
             </html>
